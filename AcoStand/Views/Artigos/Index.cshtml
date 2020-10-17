@@ -1,0 +1,115 @@
+﻿@model X.PagedList.IPagedList<AcoStand.Models.Artigos>
+@using X.PagedList.Mvc.Core;
+@*Necessário instalar X.PagedList.MVC.COre
+    http://www.macoratti.net/20/02/aspc_pagina1.htm*@
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Artigos</h1>
+@*Se utilizador estiver "logado" aparece para adicionar novo artigo*@
+<p>
+    @if (User.Identity.IsAuthenticated) {
+        <a asp-action="Create">Novo Artigo</a>
+    }
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            @*primeiro th para imagem*@
+            <th>
+                Imagem
+            </th>
+            <th>
+                @Html.ActionLink("Categoria", "Index", new { sortOrder = ViewBag.ordenarCategoria, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Preço", "Index", new { sortOrder = ViewBag.ordenarPreco, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Nome do Utilizador", "Index", new { sortOrder = ViewBag.ordenarUtilizador, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Título", "Index", new { sortOrder = ViewBag.ordenarTitulo, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Descrição
+            </th>
+
+
+            @*Se for Admin, aparece icon que valida artigos*@
+            @if (User.IsInRole("Admin")) {
+                <text>
+                    <th>
+                        @Html.ActionLink("Validado", "Index", new { sortOrder = ViewBag.ordenarValidado, currentFilter = ViewBag.CurrentFilter })
+                    </th>
+                </text>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                 @*<img src="/ImagensArtigos/honda1.png" alt="Image" width="100" />*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria.Designacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Preco)€
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Dono.Nome)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+
+            @if (User.IsInRole("Administrator"))
+            {
+                <text>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Validado)
+                    </td>
+                </text>
+            }
+            <td>
+                @if (User.IsInRole("User"))
+                {
+                    if (User.Identity.Name == item.Dono.Username || User.IsInRole("Admin"))
+                    {
+                        <text>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.IdArtigo })
+                            <br />
+                            @Html.ActionLink("Eliminar", "Delete", new { id = item.IdArtigo })
+                            <br />
+                            @Html.ActionLink("Detalhes", "Details", new { id = item.IdArtigo })
+                        </text>
+                    }
+                    else
+                    {
+                        <text>
+                            @Html.ActionLink("Detalhes", "Details", new { id = item.IdArtigo })
+                        </text>
+                    }
+                }
+                
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<br />
+
+@* Número de Página e botões de paginação *@
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina }))

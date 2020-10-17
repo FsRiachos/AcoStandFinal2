@@ -1,0 +1,86 @@
+﻿@model IEnumerable<AcoStand.Models.Utilizadores>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Lista de Utilizadores</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Localidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sexo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataNasc)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            //Se o utilizador nao for gestor, apenas poderá ver os seus detalhes
+            if (!User.IsInRole("Admin")) {
+                if (item.Username == User.Identity.Name) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Username)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Localidade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sexo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataNasc)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.IdUtilizador">Edit</a>
+                        </td>
+                    </tr>
+                    }
+
+                }
+            else {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Localidade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sexo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataNasc)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.IdUtilizador">Editar</a> |
+                        <a asp-action="Delete" asp-route-id="@item.IdUtilizador">Eliminar</a>
+                    </td>
+                </tr>
+                }
+           
+            }
+    </tbody>
+</table>

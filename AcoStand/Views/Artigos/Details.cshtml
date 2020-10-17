@@ -1,0 +1,79 @@
+﻿@model AcoStand.Models.Artigos
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalhes</h1>
+
+<div>
+    <h4>Artigos</h4>
+
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Preco)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Preco)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Contacto)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Contacto)
+        </dd>
+        @if (User.IsInRole("Administrador"))
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Validado)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Validado)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Dono)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Dono.Nome)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Dono.Localidade)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Dono.Localidade)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Categoria)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Categoria.Designacao)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (User.Identity.Name == Model.Dono.Nome)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.IdArtigo">Editar</a> <text>|</text>
+        <a asp-action="Index"> Voltar </a>
+
+
+    }
+    else
+    {
+        <a asp-action="Index">Voltar</a>
+    }
+</div>

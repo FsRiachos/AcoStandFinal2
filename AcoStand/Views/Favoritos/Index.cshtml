@@ -1,0 +1,26 @@
+﻿@model IEnumerable<AcoStand.Models.Favoritos>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Favoritos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Categoria", "Index", new { sortOrder = ViewBag.ordernarCategoria, currentFilter = ViewBag.CurrentFilter })
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Artigo.Categoria.Designacao)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
