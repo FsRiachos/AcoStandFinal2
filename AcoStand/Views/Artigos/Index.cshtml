@@ -9,7 +9,8 @@
 <h1>Artigos</h1>
 @*Se utilizador estiver "logado" aparece para adicionar novo artigo*@
 <p>
-    @if (User.Identity.IsAuthenticated) {
+    @if (User.Identity.IsAuthenticated)
+    {
         <a asp-action="Create">Novo Artigo</a>
     }
 
@@ -36,24 +37,21 @@
             <th>
                 Descrição
             </th>
+            <th>
+                Favorito
+            </th>
 
 
-            @*Se for Admin, aparece icon que valida artigos*@
-            @if (User.IsInRole("Admin")) {
-                <text>
-                    <th>
-                        @Html.ActionLink("Validado", "Index", new { sortOrder = ViewBag.ordenarValidado, currentFilter = ViewBag.CurrentFilter })
-                    </th>
-                </text>
-            }
+         
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
-                 @*<img src="/ImagensArtigos/honda1.png" alt="Image" width="100" />*@
+                @*<img src="/ImagensArtigos/honda1.png" alt="Image" width="100" />*@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Categoria.Designacao)
@@ -73,36 +71,33 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Descricao)
             </td>
-
-            @if (User.IsInRole("Administrator"))
-            {
-                <text>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Validado)
-                    </td>
-                </text>
-            }
+                   
             <td>
-                @if (User.IsInRole("User"))
+                <input type="checkbox" class="check_favorito" artigo_id="@item.IdArtigo"
+                       @if (item.ListaFavUtilizador.Count > 0) { <text> checked</text> }>
+            </td>
+
+
+            <td>
+
+                @if (User.Identity.Name == item.Dono.Username || User.IsInRole("Admin"))
                 {
-                    if (User.Identity.Name == item.Dono.Username || User.IsInRole("Admin"))
-                    {
-                        <text>
-                            @Html.ActionLink("Editar", "Edit", new { id = item.IdArtigo })
-                            <br />
-                            @Html.ActionLink("Eliminar", "Delete", new { id = item.IdArtigo })
-                            <br />
-                            @Html.ActionLink("Detalhes", "Details", new { id = item.IdArtigo })
-                        </text>
-                    }
-                    else
-                    {
-                        <text>
-                            @Html.ActionLink("Detalhes", "Details", new { id = item.IdArtigo })
-                        </text>
-                    }
+                    <text>
+                        @Html.ActionLink("Editar", "Edit", new { id = item.IdArtigo })
+                        <br />
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.IdArtigo })
+                        <br />
+                        @Html.ActionLink("Detalhes", "Details", new { id = item.IdArtigo })
+                    </text>
                 }
-                
+                else if (User.IsInRole("User"))
+                {
+                    <text>
+                        @Html.ActionLink("Detalhes", "Details", new { id = item.IdArtigo })
+                    </text>
+                }
+
+
             </td>
         </tr>
         }
@@ -113,3 +108,22 @@
 @* Número de Página e botões de paginação *@
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 @Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina }))
+
+
+@section Scripts
+    {
+    <script>
+        $(".check_favorito").on("change", function(e) {
+            var artigo = this;
+
+    $.ajax({
+        type: "POST",
+        url: '/Favoritos/UpdateFavorito',
+        data: { id: $(artigo).attr("artigo_id"), status: artigo.checked }
+    }).done(function(result) {
+      $("#tabela").html(result);
+    });
+  });
+    </script>
+
+}

@@ -1,26 +1,42 @@
 ﻿@model IEnumerable<AcoStand.Models.Favoritos>
+
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Favoritos</h1>
 
+
 <table class="table">
     <thead>
         <tr>
+            @*primeiro th para imagem*@
             <th>
-                @Html.ActionLink("Categoria", "Index", new { sortOrder = ViewBag.ordernarCategoria, currentFilter = ViewBag.CurrentFilter })
+                Imagem
             </th>
+            <th>
+                @Html.ActionLink("Categoria", "Index", new { sortOrder = ViewBag.ordenarCategoria, currentFilter = ViewBag.CurrentFilter })
+            </th>         
+            <th>
+                @Html.ActionLink("Título", "Index", new { sortOrder = ViewBag.ordenarTitulo, currentFilter = ViewBag.CurrentFilter })
+            </th>
+           
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Artigo.Categoria.Designacao)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @*<img src="/ImagensArtigos/honda1.png" alt="Image" width="100" />*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Artigo.Categoria.Designacao)
+            </td>
+            <td>
+                @Html.ActionLink(item.Artigo.Titulo, "Details", "Artigos", new { id=item.Artigo.IdArtigo }, null)
+            </td>
+        </tr>
         }
     </tbody>
 </table>

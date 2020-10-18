@@ -31,14 +31,35 @@ namespace AcoStand.Controllers
             //se nao informado nº da página vai para a 1
             int numeroPagina = (pagina ?? 1);
             //obter a lsita dos artigos
-            var artigos = _db.Artigos.Include(a => a.Categoria).Include(a => a.Dono);
-            //verifica role do user, se não for gestor só mostra os validados
-            if (!User.IsInRole("Gestores"))
-            {
-                // artigos = _db.Artigos.Include(a => a.Categoria).Include(a => a.Dono).Where(a => a.Validado == true);
-            }
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var utilizador = _db.Utilizadores.FirstOrDefault(a => a.UserFK == user.Id);
+
+            var favoritos = _db.Favoritos.Include(a => a.Artigo).Include(a => a.Artigo.Categoria).Where(a => a.IdUtlizador == utilizador.IdUtilizador);
+
+
+          /*  var artigos = _db.Artigos.Include(a => a.Categoria).Include(a => a.Dono)
+                .Include(a => a.ListaFavUtilizador);*/
+
+            var artigos = _db.Artigos.Select(a => new Artigos { 
+                IdArtigo= a.IdArtigo,
+                Categoria =a.Categoria,
+                Contacto = a.Contacto,
+                Descricao = a.Descricao,
+                Dono = a.Dono,
+                ListaFavUtilizador = a.ListaFavUtilizador.Where(b => b.IdUtlizador == utilizador.IdUtilizador).ToList(),
+                Preco = a.Preco,
+                Titulo = a.Titulo
+            }).ToList();
+
+            // var artigos = _db.Artigos.Include(a => a.Categoria).Include(a => a.Dono);
+
             return View(await artigos.ToPagedListAsync(numeroPagina, itensPorPagina));
         }
+
+
+        
+
+
         // GET: Artigos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -75,7 +96,7 @@ namespace AcoStand.Controllers
 
                 //Obter o user que está a criar o novo artigo e atribuir o seu id ao artigo que está a ser criado (IdDono)
                 var user = await _userManager.GetUserAsync(HttpContext.User);
-                //artigos.Dono = user.Id
+                artigos.Dono = _db.Utilizadores.Where(c => c.UserFK == user.Id).FirstOrDefault();
 
                 //Colocar o artigo como não válido, será necessário o mesmo ser avaliado por um gestor antes de se tornar público
                 artigos.Validado = false;

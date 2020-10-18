@@ -32,25 +32,17 @@
                             <li class="dropdown">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadores" asp-action="Index">Utilizadores</a>
                             </li>
-                            
+
                         }
 
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" asp-area="" asp-controller="Categorias" asp-action="Index">Categorias</a><span class="caret"></span>
                             <ul class="dropdown-menu" role="menu">
-                                <a asp-area="" asp-controller="Categorias" asp-action="Details" asp-route-id="2" ><li>Carros</li></a>
+                                <a asp-area="" asp-controller="Categorias" asp-action="Details" asp-route-id="2"><li>Carros</li></a>
                                 <a asp-area="" asp-controller="Categorias" asp-action="Details" asp-route-id="1"><li>Peças</li></a>
                             </ul>
                         </li>
-
-                            @if (User.IsInRole("User") && !User.IsInRole("Admin"))
-                            {
-                                <li class="dropdown">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadores" asp-action="Edit" asp-route-id="">Editar os meus dados</a>
-                                </li>
-                            }
-                        </ul>
-                   
+                    </ul>
                 </div>
             </div>
         </nav>
