@@ -4,13 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace AcoStand.Models {
     public class Artigos {
         public Artigos() {
             ListaRecursos = new HashSet<Recursos>();
             ListaFavUtilizador = new HashSet<Favoritos>();
-            }
+    }
+
 
         /// <summary>
         /// Chave Primária do Artigo
@@ -41,6 +43,15 @@ namespace AcoStand.Models {
         /// Artigo será validado por um administrador da página
         /// </summary>
         public bool Validado { get; set; }
+
+        /// <summary>
+        /// Imagem de um artigo
+        /// </summary>
+        [Display(Name = "Imagem")]
+        public string FileName { get; set; }
+
+
+        public string ContentType { get; set; }
 
         /// <summary>
         /// Chave Forasteira que indica a que dono pertence este artigo

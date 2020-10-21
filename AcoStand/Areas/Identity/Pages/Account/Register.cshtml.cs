@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using X.PagedList;
 
 namespace AcoStand.Areas.Identity.Pages.Account
 {
@@ -114,7 +115,7 @@ namespace AcoStand.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            ViewData["roles"] = _roleManager.Roles.ToList();
+            ViewData["roles"] = await _roleManager.Roles.ToListAsync();
             ReturnUrl = returnUrl;
         }
 
