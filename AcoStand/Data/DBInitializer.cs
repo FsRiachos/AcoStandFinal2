@@ -158,21 +158,6 @@ namespace AcoStand.Data
             }
             context.SaveChanges();
 
-
-            /*var recursos = new Recursos[]
-            {
-                new Recursos {Designacao = "Audi A4", Tipo = "imagem", ArtigoFK = artigos[0].IdArtigo },
-                new Recursos {Designacao = "BMW X5", Tipo = "imagem", ArtigoFK = artigos[1].IdArtigo  },
-                new Recursos {Designacao = "Opel XXX", Tipo = "imagem", ArtigoFK = artigos[2].IdArtigo  },
-                new Recursos {Designacao = "Opel YY", Tipo = "imagem", ArtigoFK = artigos[3].IdArtigo  },
-                new Recursos { Designacao = "Ford", Tipo = "imagem", ArtigoFK = artigos[4].IdArtigo  },
-                new Recursos {Designacao = "Nissan x", Tipo = "imagem", ArtigoFK = artigos[5].IdArtigo  }
-            };
-            foreach (Recursos e in recursos)
-            {
-                context.Recursos.Add(e);
-            }
-            context.SaveChanges();*/
         }
     }
 }

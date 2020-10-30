@@ -50,9 +50,6 @@ namespace AcoStand.Models {
         [Display(Name = "Imagem")]
         public string FileName { get; set; }
 
-
-        public string ContentType { get; set; }
-
         /// <summary>
         /// Chave Forasteira que indica a que dono pertence este artigo
         /// </summary>

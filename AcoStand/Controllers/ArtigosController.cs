@@ -43,7 +43,7 @@ namespace AcoStand.Controllers
             const int itensPorPagina = 5;
             //se nao informado nº da página vai para a 1
             int numeroPagina = (pagina ?? 1);
-            //obter a lsita dos artigos
+            //obter a lista dos artigos
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var utilizador = _db.Utilizadores.FirstOrDefault(a => a.UserFK == user.Id);
 
@@ -107,8 +107,6 @@ namespace AcoStand.Controllers
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 artigos.Dono = _db.Utilizadores.Where(c => c.UserFK == user.Id).FirstOrDefault();
 
-                //Colocar o artigo como não válido, será necessário o mesmo ser avaliado por um gestor antes de se tornar público
-                artigos.Validado = false;
 
                 if (artigoImg.Length > 0)
                 {
@@ -132,31 +130,6 @@ namespace AcoStand.Controllers
             ViewData["DonoFK"] = new SelectList(_db.Utilizadores, "IdUtilizador", "Localidade", artigos.DonoFK);
             return View(artigos);
         }
-
-        /*  public async Task<IActionResult> UploadImage(List<IFormFile> files)
-        {
-            long size = files.Sum(f => f.Length);
-
-            foreach (var formFile in files)
-            {
-                if (formFile.Length > 0)
-                {
-                    var filePath = Path.GetTempFileName();
-                    /*var filePath = Path.Combine(_config["StoredFilesPath"],
-            Path.GetRandomFileName());
-
-                    using (var stream = System.IO.File.Create(filePath))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
-                }
-            }
-
-            // Process uploaded files
-            // Don't rely on or trust the FileName property without validation.
-
-            return Ok(new { count = files.Count, size });
-        }*/
 
                     // GET: Artigos/Edit/5
                     public async Task<IActionResult> Edit(int? id)

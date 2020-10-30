@@ -54,19 +54,6 @@
     <a asp-action="Index">Voltar</a>
 </div>
 
-@*<script>
-  "use strict";
-
-  function AJAXSubmit (oFormElement) {
-    var oReq = new XMLHttpRequest();
-    oReq.onload = function(e) {
-    oFormElement.elements.namedItem("result").value =
-      'Result: ' + this.status + ' ' + this.statusText;
-    };
-    oReq.open("post", oFormElement.action);
-    oReq.send(new FormData(oFormElement));
-  }
-</script>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
